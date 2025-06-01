@@ -1,0 +1,6 @@
+@WaterWise.API_HostAddress = http://localhost:5072
+
+GET {{WaterWise.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

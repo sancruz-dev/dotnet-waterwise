@@ -1,0 +1,6 @@
+@WaterWise.NotificationService_HostAddress = http://localhost:5086
+
+GET {{WaterWise.NotificationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
