@@ -1,0 +1,57 @@
+2025-06-01 12:15:26.768 -03:00 [INF] Configurando conexão com Oracle: Data Source=localhost:1521/XEPDB1
+2025-06-01 12:15:32.630 -03:00 [ERR] 2025-06-01 12:15:32.627169 ThreadID:8   (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 12:15:32.635 -03:00 [INF] ✅ Conexão com banco de dados estabelecida
+2025-06-01 12:15:36.752 -03:00 [ERR] 2025-06-01 12:15:36.751950 ThreadID:12  (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 12:15:36.760 -03:00 [WRN] ⚠️ Erro na conexão com banco: ORA-50201: Oracle Communication: Failed to connect to server or failed to parse connect string. API continuará sem banco.
+2025-06-01 12:15:39.798 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-01 12:15:39.799 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-01 12:15:39.800 -03:00 [INF] 📍 Swagger UI disponível em: http://localhost:5072
+2025-06-01 12:15:39.801 -03:00 [INF] 🔗 Health check em: http://localhost:5072/health
+2025-06-01 12:15:39.990 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-01 12:15:39.993 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-01 12:15:39.994 -03:00 [INF] Hosting environment: Development
+2025-06-01 12:15:39.996 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API
+2025-06-01 12:16:28.518 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/health - null null
+2025-06-01 12:16:28.616 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-01 12:16:28.657 -03:00 [INF] Executing endpoint 'Health checks'
+2025-06-01 12:16:32.857 -03:00 [ERR] 2025-06-01 12:16:32.857304 ThreadID:27  (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 12:16:32.868 -03:00 [ERR] Health check WaterWiseContext with status "Unhealthy" completed after 4165.5907ms with message 'null'
+2025-06-01 12:16:32.896 -03:00 [INF] Executed endpoint 'Health checks'
+2025-06-01 12:16:32.901 -03:00 [INF] Request GET /health completed in 4245ms with status code 503
+2025-06-01 12:16:32.909 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/health - 503 null text/plain 4393.5847ms
+2025-06-01 12:16:33.272 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/favicon.ico - null null
+2025-06-01 12:16:33.281 -03:00 [INF] Request GET /favicon.ico completed in 0ms with status code 404
+2025-06-01 12:16:33.285 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/favicon.ico - 404 0 null 13.5042ms
+2025-06-01 12:16:33.291 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5072/favicon.ico, Response status code: 404
+2025-06-01 12:16:57.815 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/ - null null
+2025-06-01 12:16:57.823 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/ - 301 0 null 7.8608ms
+2025-06-01 12:16:57.830 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/index.html - null null
+2025-06-01 12:16:57.935 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/index.html - 200 null text/html;charset=utf-8 104.7583ms
+2025-06-01 12:16:57.983 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger-ui.css - null null
+2025-06-01 12:16:57.984 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger-ui-bundle.js - null null
+2025-06-01 12:16:57.984 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/index.css - null null
+2025-06-01 12:16:57.984 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/index.js - null null
+2025-06-01 12:16:58.009 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/index.js - 200 null application/javascript;charset=utf-8 24.8042ms
+2025-06-01 12:16:58.013 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger-ui-standalone-preset.js - null null
+2025-06-01 12:16:58.038 -03:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-06-01 12:16:58.039 -03:00 [INF] Sending file. Request path: '/index.css'. Physical path: 'N/A'
+2025-06-01 12:16:58.085 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/index.css - 200 202 text/css 101.0987ms
+2025-06-01 12:16:58.081 -03:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-06-01 12:16:58.067 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger-ui.css - 200 154949 text/css 83.8806ms
+2025-06-01 12:16:58.099 -03:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-06-01 12:16:58.106 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger-ui-standalone-preset.js - 200 229223 text/javascript 92.8426ms
+2025-06-01 12:16:58.118 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger-ui-bundle.js - 200 1484234 text/javascript 134.0163ms
+2025-06-01 12:16:58.811 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
+2025-06-01 12:16:58.842 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/favicon-32x32.png - null null
+2025-06-01 12:16:58.856 -03:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-06-01 12:16:58.882 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/favicon-32x32.png - 200 628 image/png 40.0855ms
+2025-06-01 12:16:59.052 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 240.7853ms
+2025-06-01 12:17:41.263 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/index.html - null null
+2025-06-01 12:17:41.268 -03:00 [INF] Request GET /swagger/index.html completed in 0ms with status code 404
+2025-06-01 12:17:41.272 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/index.html - 404 0 null 8.7968ms
+2025-06-01 12:17:41.280 -03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5072/swagger/index.html, Response status code: 404
+2025-06-01 12:19:59.578 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v2/swagger.json - null null
+2025-06-01 12:19:59.586 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v2/swagger.json - 200 null application/json;charset=utf-8 8.1066ms
+2025-06-01 12:20:03.034 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
+2025-06-01 12:20:03.062 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 27.8294ms
+2025-06-01 12:31:55.103 -03:00 [INF] Application is shutting down...

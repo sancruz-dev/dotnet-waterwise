@@ -14,11 +14,23 @@ namespace WaterWise.ML.Services
   {
     private readonly MLContext _mlContext;
     private ITransformer? _model;
-    private readonly string _modelPath = "Assets/flood_risk_model.zip";
+    private readonly string _modelPath;
 
     public MLPredictionService()
     {
       _mlContext = new MLContext(seed: 0);
+
+      // Ajustar o caminho do modelo para ser relativo ao diretório de trabalho atual
+      var baseDirectory = AppContext.BaseDirectory;
+      var assetsDirectory = Path.Combine(baseDirectory, "Assets");
+
+      // Criar diretório Assets se não existir
+      if (!Directory.Exists(assetsDirectory))
+      {
+        Directory.CreateDirectory(assetsDirectory);
+      }
+
+      _modelPath = Path.Combine(assetsDirectory, "flood_risk_model.zip");
       LoadModel();
     }
 
@@ -46,31 +58,59 @@ namespace WaterWise.ML.Services
 
     public async Task TrainModelAsync()
     {
-      // Dados sintéticos para treinamento
-      var trainingData = GenerateTrainingData();
-      var dataView = _mlContext.Data.LoadFromEnumerable(trainingData);
+      try
+      {
+        // Dados sintéticos para treinamento
+        var trainingData = GenerateTrainingData();
+        var dataView = _mlContext.Data.LoadFromEnumerable(trainingData);
 
-      // Pipeline de treinamento
-      var pipeline = _mlContext.Transforms.Concatenate("Features",
-              nameof(EnchentePredictionInput.UmidadeSolo),
-              nameof(EnchentePredictionInput.TemperaturaAr),
-              nameof(EnchentePredictionInput.PrecipitacaoMm),
-              nameof(EnchentePredictionInput.AreaHectares),
-              nameof(EnchentePredictionInput.NivelDegradacao))
-          .Append(_mlContext.BinaryClassification.Trainers.SdcaLogisticRegression(labelColumnName: nameof(EnchentePredictionInput.RiscoEnchente), featureColumnName: "Features"));
+        // Pipeline de treinamento
+        var pipeline = _mlContext.Transforms.Concatenate("Features",
+                nameof(EnchentePredictionInput.UmidadeSolo),
+                nameof(EnchentePredictionInput.TemperaturaAr),
+                nameof(EnchentePredictionInput.PrecipitacaoMm),
+                nameof(EnchentePredictionInput.AreaHectares),
+                nameof(EnchentePredictionInput.NivelDegradacao))
+            .Append(_mlContext.BinaryClassification.Trainers.SdcaLogisticRegression(
+                labelColumnName: nameof(EnchentePredictionInput.RiscoEnchente),
+                featureColumnName: "Features"));
 
-      // Treinar modelo
-      _model = pipeline.Fit(dataView);
+        // Treinar modelo
+        _model = pipeline.Fit(dataView);
 
-      // Salvar modelo
-      _mlContext.Model.Save(_model, dataView.Schema, _modelPath);
+        // Garantir que o diretório existe antes de salvar
+        var directory = Path.GetDirectoryName(_modelPath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+          Directory.CreateDirectory(directory);
+        }
+
+        // Salvar modelo
+        _mlContext.Model.Save(_model, dataView.Schema, _modelPath);
+
+        Console.WriteLine($"Modelo ML treinado e salvo em: {_modelPath}");
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"Erro ao treinar modelo ML: {ex.Message}");
+        throw;
+      }
     }
 
     private void LoadModel()
     {
       if (File.Exists(_modelPath))
       {
-        _model = _mlContext.Model.Load(_modelPath, out _);
+        try
+        {
+          _model = _mlContext.Model.Load(_modelPath, out _);
+          Console.WriteLine($"Modelo ML carregado de: {_modelPath}");
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine($"Erro ao carregar modelo ML: {ex.Message}");
+          // Se falhar ao carregar, _model fica null e será treinado novamente
+        }
       }
     }
 
