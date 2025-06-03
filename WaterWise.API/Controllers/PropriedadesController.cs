@@ -330,19 +330,48 @@ namespace WaterWise.API.Controllers
       if (sensor == null)
         return BadRequest(new { error = "Sensor não encontrado" });
 
+      // ✅ SOLUÇÃO: Verificar se já existe leitura recente
+      var ultimaLeitura = await _context.LeiturasSensores
+          .Where(l => l.IdSensor == inputDto.IdSensor)
+          .OrderByDescending(l => l.TimestampLeitura)
+          .FirstOrDefaultAsync();
+
+      var agora = DateTime.Now;
+
+      // Evitar leituras duplicadas no mesmo segundo
+      if (ultimaLeitura != null &&
+          Math.Abs((agora - ultimaLeitura.TimestampLeitura).TotalSeconds) < 1)
+      {
+        // Adicionar alguns milissegundos para evitar duplicação
+        agora = ultimaLeitura.TimestampLeitura.AddMilliseconds(
+            new Random().Next(100, 999));
+      }
+
       var leitura = new LeituraSensor
       {
         IdSensor = inputDto.IdSensor,
-        TimestampLeitura = DateTime.Now,
+        TimestampLeitura = agora, // ✅ Usar timestamp calculado
         UmidadeSolo = inputDto.UmidadeSolo,
         TemperaturaAr = inputDto.TemperaturaAr,
         PrecipitacaoMm = inputDto.PrecipitacaoMm
       };
 
-      _context.LeiturasSensores.Add(leitura);
-      await _context.SaveChangesAsync();
+      try
+      {
+        _context.LeiturasSensores.Add(leitura);
+        await _context.SaveChangesAsync();
+      }
+      catch (DbUpdateException ex) when (ex.InnerException?.Message?.Contains("ORA-00001") == true)
+      {
+        // ✅ Tratamento específico para constraint violation
+        return Conflict(new
+        {
+          error = "Leitura duplicada detectada. Tente novamente em alguns segundos.",
+          details = "Uma leitura similar já foi registrada para este sensor."
+        });
+      }
 
-      // Publicar dados no RabbitMQ
+      // Resto do código permanece igual...
       await _rabbitMQService.PublishSensorDataAsync(new
       {
         SensorId = leitura.IdSensor,
@@ -352,7 +381,6 @@ namespace WaterWise.API.Controllers
         Timestamp = DateTime.UtcNow
       });
 
-      // Verificar condições de alerta
       await VerificarAlertas(leitura, sensor);
 
       return Ok(new
@@ -363,7 +391,6 @@ namespace WaterWise.API.Controllers
         message = "Dados do sensor processados com sucesso"
       });
     }
-
     private async Task VerificarAlertas(LeituraSensor leitura, SensorIoT sensor)
     {
       var alertas = new List<object>();

@@ -16,6 +16,7 @@ namespace WaterWise.Core.Entities
     public int IdSensor { get; set; }
 
     [Column("TIMESTAMP_LEITURA")]
+    [Required]
     public DateTime TimestampLeitura { get; set; } = DateTime.Now;
 
     [Column("UMIDADE_SOLO", TypeName = "NUMBER(5,2)")]

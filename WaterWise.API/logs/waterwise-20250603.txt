@@ -2474,3 +2474,349 @@ https://docs.oracle.com/error-help/db/ora-02292/
    at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
 2025-06-03 01:55:04.520 -03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5072/api/v1/Propriedades/5 - 500 null text/plain; charset=utf-8; ver=1 4277.1928ms
 2025-06-03 02:03:41.190 -03:00 [INF] Application is shutting down...
+2025-06-03 02:06:39.377 -03:00 [INF] Configurando conexão com Oracle: Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))) (CONNECT_DATA=(SERVER=DEDICATED)(SID=ORCL)))
+2025-06-03 02:06:41.153 -03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-06-03 02:06:41.959 -03:00 [INF] ✅ Conexão com Oracle Database estabelecida
+2025-06-03 02:06:42.112 -03:00 [INF] 📊 Encontradas 11 tabelas WaterWise no schema
+2025-06-03 02:06:44.888 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-03 02:06:44.895 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-03 02:06:44.897 -03:00 [INF] 📍 Swagger UI: http://localhost:5072
+2025-06-03 02:06:44.898 -03:00 [INF] 🔗 Health check: http://localhost:5072/health
+2025-06-03 02:06:44.899 -03:00 [INF] 📊 Database status: http://localhost:5072/api/database/status
+2025-06-03 02:06:45.111 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-03 02:06:45.132 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-03 02:06:45.145 -03:00 [INF] Hosting environment: Development
+2025-06-03 02:06:45.149 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API
+2025-06-03 02:06:49.172 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/index.html - null null
+2025-06-03 02:06:49.304 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/index.html - 200 null text/html;charset=utf-8 134.1949ms
+2025-06-03 02:06:49.585 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
+2025-06-03 02:06:49.805 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 221.7871ms
+2025-06-03 02:06:58.095 -03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5072/api/v1/Propriedades/5 - null null
+2025-06-03 02:06:58.148 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-03 02:06:58.151 -03:00 [INF] CORS policy execution successful.
+2025-06-03 02:06:58.193 -03:00 [INF] Executing endpoint 'WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API)'
+2025-06-03 02:06:58.224 -03:00 [INF] Route matched with {action = "DeletePropriedade", controller = "Propriedades"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeletePropriedade(Int32) on controller WaterWise.API.Controllers.PropriedadesController (WaterWise.API).
+2025-06-03 02:07:02.354 -03:00 [WRN] ⚠️ Erro ao conectar RabbitMQ: None of the specified endpoints were reachable. Mensageria desabilitada.
+2025-06-03 02:07:02.461 -03:00 [INF] Iniciando exclusão da propriedade ID: 5
+2025-06-03 02:07:03.005 -03:00 [INF] Executed DbCommand (57ms) [Parameters=[:id_0='5'], CommandType='"Text"', CommandTimeout='30']
+SELECT "g1"."ID_PROPRIEDADE", "g1"."AREA_HECTARES", "g1"."DATA_CADASTRO", "g1"."ID_NIVEL_DEGRADACAO", "g1"."ID_PRODUTOR", "g1"."LATITUDE", "g1"."LONGITUDE", "g1"."NOME_PROPRIEDADE", "g0"."ID_SENSOR", "g0"."DATA_INSTALACAO", "g0"."ID_PROPRIEDADE", "g0"."ID_TIPO_SENSOR", "g0"."MODELO_DISPOSITIVO"
+FROM (
+    SELECT "g"."ID_PROPRIEDADE", "g"."AREA_HECTARES", "g"."DATA_CADASTRO", "g"."ID_NIVEL_DEGRADACAO", "g"."ID_PRODUTOR", "g"."LATITUDE", "g"."LONGITUDE", "g"."NOME_PROPRIEDADE"
+    FROM "GS_WW_PROPRIEDADE_RURAL" "g"
+    WHERE "g"."ID_PROPRIEDADE" = :id_0
+    FETCH FIRST 1 ROWS ONLY
+) "g1"
+LEFT JOIN "GS_WW_SENSOR_IOT" "g0" ON "g1"."ID_PROPRIEDADE" = "g0"."ID_PROPRIEDADE"
+ORDER BY "g1"."ID_PROPRIEDADE"
+2025-06-03 02:07:03.124 -03:00 [INF] Propriedade possui 1 sensor(es). Iniciando exclusão em cascata.
+2025-06-03 02:07:03.177 -03:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "g"."ID_LEITURA", "g"."ID_SENSOR", "g"."PRECIPITACAO_MM", "g"."TEMPERATURA_AR", "g"."TIMESTAMP_LEITURA", "g"."UMIDADE_SOLO"
+FROM "GS_WW_LEITURA_SENSOR" "g"
+WHERE "g"."ID_SENSOR" = 5
+2025-06-03 02:07:03.204 -03:00 [INF] Excluindo 2 leitura(s) total dos sensores
+2025-06-03 02:07:03.387 -03:00 [INF] Executed DbCommand (28ms) [Parameters=[:p0='9', :cur0=NULL (Nullable = false) (Direction = Output) (DbType = Object), :p1='10', :cur1=NULL (Nullable = false) (Direction = Output) (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+DECLARE
+
+v_RowCount INTEGER;
+
+BEGIN
+
+DELETE FROM "GS_WW_LEITURA_SENSOR"
+WHERE "ID_LEITURA" = :p0;
+v_RowCount := SQL%ROWCOUNT;
+OPEN :cur0 FOR SELECT v_RowCount FROM DUAL;
+DELETE FROM "GS_WW_LEITURA_SENSOR"
+WHERE "ID_LEITURA" = :p1;
+v_RowCount := SQL%ROWCOUNT;
+OPEN :cur1 FOR SELECT v_RowCount FROM DUAL;
+
+END;
+2025-06-03 02:07:03.425 -03:00 [INF] Excluindo 1 sensor(es)
+2025-06-03 02:07:03.447 -03:00 [INF] Executed DbCommand (12ms) [Parameters=[:p0='5', :cur0=NULL (Nullable = false) (Direction = Output) (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+DECLARE
+
+v_RowCount INTEGER;
+
+BEGIN
+
+DELETE FROM "GS_WW_SENSOR_IOT"
+WHERE "ID_SENSOR" = :p0;
+v_RowCount := SQL%ROWCOUNT;
+OPEN :cur0 FOR SELECT v_RowCount FROM DUAL;
+
+END;
+2025-06-03 02:07:03.457 -03:00 [INF] Excluindo propriedade ID: 5
+2025-06-03 02:07:03.472 -03:00 [INF] Executed DbCommand (6ms) [Parameters=[:p0='5', :cur0=NULL (Nullable = false) (Direction = Output) (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+DECLARE
+
+v_RowCount INTEGER;
+
+BEGIN
+
+DELETE FROM "GS_WW_PROPRIEDADE_RURAL"
+WHERE "ID_PROPRIEDADE" = :p0;
+v_RowCount := SQL%ROWCOUNT;
+OPEN :cur0 FOR SELECT v_RowCount FROM DUAL;
+
+END;
+2025-06-03 02:07:03.496 -03:00 [INF] ✅ Propriedade, sensores e leituras excluídos com sucesso! ID: 5
+2025-06-03 02:07:03.505 -03:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2025-06-03 02:07:03.511 -03:00 [INF] Executed action WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API) in 5280.1648ms
+2025-06-03 02:07:03.514 -03:00 [INF] Executed endpoint 'WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API)'
+2025-06-03 02:07:03.516 -03:00 [WRN] Slow request DELETE /api/v1/Propriedades/5 completed in 5325ms with status code 204
+2025-06-03 02:07:03.531 -03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5072/api/v1/Propriedades/5 - 204 null null 5435.8495ms
+2025-06-03 02:07:28.374 -03:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5072/api/v1/Propriedades/5 - null null
+2025-06-03 02:07:28.382 -03:00 [INF] CORS policy execution successful.
+2025-06-03 02:07:28.388 -03:00 [INF] Executing endpoint 'WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API)'
+2025-06-03 02:07:28.391 -03:00 [INF] Route matched with {action = "DeletePropriedade", controller = "Propriedades"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeletePropriedade(Int32) on controller WaterWise.API.Controllers.PropriedadesController (WaterWise.API).
+2025-06-03 02:07:32.491 -03:00 [WRN] ⚠️ Erro ao conectar RabbitMQ: None of the specified endpoints were reachable. Mensageria desabilitada.
+2025-06-03 02:07:32.621 -03:00 [INF] Iniciando exclusão da propriedade ID: 5
+2025-06-03 02:07:32.631 -03:00 [INF] Executed DbCommand (4ms) [Parameters=[:id_0='5'], CommandType='"Text"', CommandTimeout='30']
+SELECT "g1"."ID_PROPRIEDADE", "g1"."AREA_HECTARES", "g1"."DATA_CADASTRO", "g1"."ID_NIVEL_DEGRADACAO", "g1"."ID_PRODUTOR", "g1"."LATITUDE", "g1"."LONGITUDE", "g1"."NOME_PROPRIEDADE", "g0"."ID_SENSOR", "g0"."DATA_INSTALACAO", "g0"."ID_PROPRIEDADE", "g0"."ID_TIPO_SENSOR", "g0"."MODELO_DISPOSITIVO"
+FROM (
+    SELECT "g"."ID_PROPRIEDADE", "g"."AREA_HECTARES", "g"."DATA_CADASTRO", "g"."ID_NIVEL_DEGRADACAO", "g"."ID_PRODUTOR", "g"."LATITUDE", "g"."LONGITUDE", "g"."NOME_PROPRIEDADE"
+    FROM "GS_WW_PROPRIEDADE_RURAL" "g"
+    WHERE "g"."ID_PROPRIEDADE" = :id_0
+    FETCH FIRST 1 ROWS ONLY
+) "g1"
+LEFT JOIN "GS_WW_SENSOR_IOT" "g0" ON "g1"."ID_PROPRIEDADE" = "g0"."ID_PROPRIEDADE"
+ORDER BY "g1"."ID_PROPRIEDADE"
+2025-06-03 02:07:32.635 -03:00 [WRN] Propriedade não encontrada com ID: 5
+2025-06-03 02:07:32.651 -03:00 [INF] Executing NotFoundObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-03 02:07:32.664 -03:00 [INF] Executed action WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API) in 4270.931ms
+2025-06-03 02:07:32.667 -03:00 [INF] Executed endpoint 'WaterWise.API.Controllers.PropriedadesController.DeletePropriedade (WaterWise.API)'
+2025-06-03 02:07:32.669 -03:00 [WRN] Slow request DELETE /api/v1/Propriedades/5 completed in 4281ms with status code 404
+2025-06-03 02:07:32.673 -03:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5072/api/v1/Propriedades/5 - 404 null application/json; charset=utf-8; ver=1 4298.2739ms
+2025-06-03 02:07:52.925 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5072/api/v1/Propriedades/sensor-data - application/json; ver=1.0 89
+2025-06-03 02:07:52.932 -03:00 [INF] CORS policy execution successful.
+2025-06-03 02:07:52.934 -03:00 [INF] Executing endpoint 'WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API)'
+2025-06-03 02:07:52.944 -03:00 [INF] Route matched with {action = "ReceberDadosSensor", controller = "Propriedades"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReceberDadosSensor(WaterWise.Core.DTOs.LeituraSensorInputDto) on controller WaterWise.API.Controllers.PropriedadesController (WaterWise.API).
+2025-06-03 02:07:57.057 -03:00 [WRN] ⚠️ Erro ao conectar RabbitMQ: None of the specified endpoints were reachable. Mensageria desabilitada.
+2025-06-03 02:07:57.179 -03:00 [INF] Executed DbCommand (6ms) [Parameters=[:inputDto_IdSensor_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT "g"."ID_SENSOR", "g"."DATA_INSTALACAO", "g"."ID_PROPRIEDADE", "g"."ID_TIPO_SENSOR", "g"."MODELO_DISPOSITIVO", "g0"."ID_PROPRIEDADE", "g0"."AREA_HECTARES", "g0"."DATA_CADASTRO", "g0"."ID_NIVEL_DEGRADACAO", "g0"."ID_PRODUTOR", "g0"."LATITUDE", "g0"."LONGITUDE", "g0"."NOME_PROPRIEDADE", "g1"."ID_PRODUTOR", "g1"."CPF_CNPJ", "g1"."DATA_CADASTRO", "g1"."EMAIL", "g1"."NOME_COMPLETO", "g1"."SENHA", "g1"."TELEFONE"
+FROM "GS_WW_SENSOR_IOT" "g"
+INNER JOIN "GS_WW_PROPRIEDADE_RURAL" "g0" ON "g"."ID_PROPRIEDADE" = "g0"."ID_PROPRIEDADE"
+INNER JOIN "GS_WW_PRODUTOR_RURAL" "g1" ON "g0"."ID_PRODUTOR" = "g1"."ID_PRODUTOR"
+WHERE "g"."ID_SENSOR" = :inputDto_IdSensor_0
+FETCH FIRST 1 ROWS ONLY
+2025-06-03 02:07:57.290 -03:00 [ERR] 2025-06-03 02:07:57.290036 ThreadID:24  (ERROR)   OracleRelationalCommand.ExecuteReaderAsync() :  Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00001: restrição exclusiva (RM553528.SYS_C005158645) violada
+ORA-06512: em line 14
+https://docs.oracle.com/error-help/db/ora-00001/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+2025-06-03 02:07:57.294 -03:00 [ERR] Failed executing DbCommand (45ms) [Parameters=[:p0='1', :p1='500' (Nullable = true), :p2='60' (Nullable = true), :p3='2025-06-03T02:07:57.2054221-03:00' (DbType = DateTime), :p4='100' (Nullable = true), :cur0=NULL (Nullable = false) (Direction = Output) (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+DECLARE
+
+TYPE "rGS_WW_LEITURA_SENSOR_0" IS RECORD
+(
+"ID_LEITURA" NUMBER(10)
+);
+TYPE "tGS_WW_LEITURA_SENSOR_0" IS TABLE OF "rGS_WW_LEITURA_SENSOR_0";
+"lGS_WW_LEITURA_SENSOR_0" "tGS_WW_LEITURA_SENSOR_0";
+
+BEGIN
+
+"lGS_WW_LEITURA_SENSOR_0" := "tGS_WW_LEITURA_SENSOR_0"();
+"lGS_WW_LEITURA_SENSOR_0".extend(1);
+INSERT INTO "GS_WW_LEITURA_SENSOR" ("ID_SENSOR", "PRECIPITACAO_MM", "TEMPERATURA_AR", "TIMESTAMP_LEITURA", "UMIDADE_SOLO")
+VALUES (:p0, :p1, :p2, :p3, :p4)
+RETURNING "ID_LEITURA" INTO "lGS_WW_LEITURA_SENSOR_0"(1)."ID_LEITURA";
+OPEN :cur0 FOR SELECT "lGS_WW_LEITURA_SENSOR_0"(1)."ID_LEITURA" FROM DUAL;
+
+END;
+2025-06-03 02:07:57.322 -03:00 [ERR] 2025-06-03 02:07:57.322219 ThreadID:24  (ERROR)   OracleExecutionStrategy.ExecuteAsync() :  Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00001: restrição exclusiva (RM553528.SYS_C005158645) violada
+ORA-06512: em line 14
+https://docs.oracle.com/error-help/db/ora-00001/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Update.Internal.OracleModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+2025-06-03 02:07:57.334 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'WaterWise.Infrastructure.Data.WaterWiseContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00001: restrição exclusiva (RM553528.SYS_C005158645) violada
+ORA-06512: em line 14
+https://docs.oracle.com/error-help/db/ora-00001/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Update.Internal.OracleModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00001: restrição exclusiva (RM553528.SYS_C005158645) violada
+ORA-06512: em line 14
+https://docs.oracle.com/error-help/db/ora-00001/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Update.Internal.OracleModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-06-03 02:07:57.365 -03:00 [INF] Executed action WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API) in 4418.1225ms
+2025-06-03 02:07:57.367 -03:00 [INF] Executed endpoint 'WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API)'
+2025-06-03 02:07:57.371 -03:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00001: restrição exclusiva (RM553528.SYS_C005158645) violada
+ORA-06512: em line 14
+https://docs.oracle.com/error-help/db/ora-00001/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Update.Internal.OracleModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor(LeituraSensorInputDto inputDto) in C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API\Controllers\PropriedadesController.cs:line 343
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Program.<>c.<<<Main>$>b__0_8>d.MoveNext() in C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API\Program.cs:line 189
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at AspNetCoreRateLimit.RateLimitMiddleware`1.Invoke(HttpContext context) in C:\Users\User\Documents\Github\AspNetCoreRateLimit\src\AspNetCoreRateLimit\Middleware\RateLimitMiddleware.cs:line 124
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-03 02:07:57.424 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5072/api/v1/Propriedades/sensor-data - 500 null text/plain; charset=utf-8; ver=1 4498.2946ms
+2025-06-03 02:25:27.195 -03:00 [INF] Application is shutting down...
+2025-06-03 02:26:05.746 -03:00 [INF] Configurando conexão com Oracle: Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))) (CONNECT_DATA=(SERVER=DEDICATED)(SID=ORCL)))
+2025-06-03 02:26:06.814 -03:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-06-03 02:26:07.520 -03:00 [INF] ✅ Conexão com Oracle Database estabelecida
+2025-06-03 02:26:07.671 -03:00 [INF] 📊 Encontradas 11 tabelas WaterWise no schema
+2025-06-03 02:26:10.486 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-03 02:26:10.492 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-03 02:26:10.494 -03:00 [INF] 📍 Swagger UI: http://localhost:5072
+2025-06-03 02:26:10.496 -03:00 [INF] 🔗 Health check: http://localhost:5072/health
+2025-06-03 02:26:10.498 -03:00 [INF] 📊 Database status: http://localhost:5072/api/database/status
+2025-06-03 02:26:10.701 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-03 02:26:10.705 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-03 02:26:10.707 -03:00 [INF] Hosting environment: Development
+2025-06-03 02:26:10.709 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API
+2025-06-03 02:26:14.446 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
+2025-06-03 02:26:14.724 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 278.5227ms
+2025-06-03 02:26:22.758 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5072/api/v1/Propriedades/sensor-data - application/json; ver=1.0 89
+2025-06-03 02:26:22.844 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-03 02:26:22.846 -03:00 [INF] CORS policy execution successful.
+2025-06-03 02:26:22.906 -03:00 [INF] Executing endpoint 'WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API)'
+2025-06-03 02:26:22.944 -03:00 [INF] Route matched with {action = "ReceberDadosSensor", controller = "Propriedades"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ReceberDadosSensor(WaterWise.Core.DTOs.LeituraSensorInputDto) on controller WaterWise.API.Controllers.PropriedadesController (WaterWise.API).
+2025-06-03 02:26:27.222 -03:00 [WRN] ⚠️ Erro ao conectar RabbitMQ: None of the specified endpoints were reachable. Mensageria desabilitada.
+2025-06-03 02:26:27.909 -03:00 [INF] Executed DbCommand (48ms) [Parameters=[:inputDto_IdSensor_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT "g"."ID_SENSOR", "g"."DATA_INSTALACAO", "g"."ID_PROPRIEDADE", "g"."ID_TIPO_SENSOR", "g"."MODELO_DISPOSITIVO", "g0"."ID_PROPRIEDADE", "g0"."AREA_HECTARES", "g0"."DATA_CADASTRO", "g0"."ID_NIVEL_DEGRADACAO", "g0"."ID_PRODUTOR", "g0"."LATITUDE", "g0"."LONGITUDE", "g0"."NOME_PROPRIEDADE", "g1"."ID_PRODUTOR", "g1"."CPF_CNPJ", "g1"."DATA_CADASTRO", "g1"."EMAIL", "g1"."NOME_COMPLETO", "g1"."SENHA", "g1"."TELEFONE"
+FROM "GS_WW_SENSOR_IOT" "g"
+INNER JOIN "GS_WW_PROPRIEDADE_RURAL" "g0" ON "g"."ID_PROPRIEDADE" = "g0"."ID_PROPRIEDADE"
+INNER JOIN "GS_WW_PRODUTOR_RURAL" "g1" ON "g0"."ID_PRODUTOR" = "g1"."ID_PRODUTOR"
+WHERE "g"."ID_SENSOR" = :inputDto_IdSensor_0
+FETCH FIRST 1 ROWS ONLY
+2025-06-03 02:26:28.085 -03:00 [INF] Executed DbCommand (21ms) [Parameters=[:inputDto_IdSensor_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT "g"."ID_LEITURA", "g"."ID_SENSOR", "g"."PRECIPITACAO_MM", "g"."TEMPERATURA_AR", "g"."TIMESTAMP_LEITURA", "g"."UMIDADE_SOLO"
+FROM "GS_WW_LEITURA_SENSOR" "g"
+WHERE "g"."ID_SENSOR" = :inputDto_IdSensor_0
+ORDER BY "g"."TIMESTAMP_LEITURA" DESC
+FETCH FIRST 1 ROWS ONLY
+2025-06-03 02:26:28.290 -03:00 [INF] Executed DbCommand (23ms) [Parameters=[:p0='1', :p1='500' (Nullable = true), :p2='60' (Nullable = true), :p3='2025-06-03T02:26:28.1132260-03:00' (DbType = DateTime), :p4='100' (Nullable = true), :cur0=NULL (Nullable = false) (Direction = Output) (DbType = Object)], CommandType='"Text"', CommandTimeout='30']
+DECLARE
+
+TYPE "rGS_WW_LEITURA_SENSOR_0" IS RECORD
+(
+"ID_LEITURA" NUMBER(10)
+);
+TYPE "tGS_WW_LEITURA_SENSOR_0" IS TABLE OF "rGS_WW_LEITURA_SENSOR_0";
+"lGS_WW_LEITURA_SENSOR_0" "tGS_WW_LEITURA_SENSOR_0";
+
+BEGIN
+
+"lGS_WW_LEITURA_SENSOR_0" := "tGS_WW_LEITURA_SENSOR_0"();
+"lGS_WW_LEITURA_SENSOR_0".extend(1);
+INSERT INTO "GS_WW_LEITURA_SENSOR" ("ID_SENSOR", "PRECIPITACAO_MM", "TEMPERATURA_AR", "TIMESTAMP_LEITURA", "UMIDADE_SOLO")
+VALUES (:p0, :p1, :p2, :p3, :p4)
+RETURNING "ID_LEITURA" INTO "lGS_WW_LEITURA_SENSOR_0"(1)."ID_LEITURA";
+OPEN :cur0 FOR SELECT "lGS_WW_LEITURA_SENSOR_0"(1)."ID_LEITURA" FROM DUAL;
+
+END;
+2025-06-03 02:26:28.358 -03:00 [WRN] Alertas gerados para sensor 1: 1 alertas
+2025-06-03 02:26:28.370 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType5`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-06-03 02:26:28.402 -03:00 [INF] Executed action WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API) in 5447.8997ms
+2025-06-03 02:26:28.406 -03:00 [INF] Executed endpoint 'WaterWise.API.Controllers.PropriedadesController.ReceberDadosSensor (WaterWise.API)'
+2025-06-03 02:26:28.408 -03:00 [WRN] Slow request POST /api/v1/Propriedades/sensor-data completed in 5505ms with status code 200
+2025-06-03 02:26:28.417 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5072/api/v1/Propriedades/sensor-data - 200 null application/json; charset=utf-8; ver=1 5660.3875ms
+2025-06-03 02:28:09.287 -03:00 [INF] Application is shutting down...
