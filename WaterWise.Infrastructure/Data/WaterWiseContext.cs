@@ -26,46 +26,24 @@ namespace WaterWise.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             // ===========================================
-            // CONFIGURAÇÕES ESPECÍFICAS PARA ORACLE
+            // CONFIGURAÇÕES SIMPLIFICADAS PARA ORACLE
             // ===========================================
 
-            // Configurar nomes de tabelas em maiúsculo (padrão Oracle)
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                // Garantir que os nomes das tabelas estejam em maiúsculo
-                var tableName = entityType.GetTableName();
-                if (!string.IsNullOrEmpty(tableName))
-                {
-                    entityType.SetTableName(tableName.ToUpperInvariant());
-                }
+            // As entidades já têm [Column] attributes, então só precisamos 
+            // configurar relacionamentos e propriedades especiais
 
-                // Configurar nomes de colunas em maiúsculo
-                foreach (var property in entityType.GetProperties())
-                {
-                    var columnName = property.GetColumnName();
-                    if (!string.IsNullOrEmpty(columnName))
-                    {
-                        property.SetColumnName(columnName.ToUpperInvariant());
-                    }
-                }
-            }
-
-            // Configurações de precisão para Oracle
             modelBuilder.Entity<PropriedadeRural>(entity =>
             {
                 entity.Property(p => p.Latitude)
-                    .HasColumnType("NUMBER(10,7)")
-                    .HasColumnName("LATITUDE");
+                    .HasColumnType("NUMBER(10,7)");
 
                 entity.Property(p => p.Longitude)
-                    .HasColumnType("NUMBER(10,7)")
-                    .HasColumnName("LONGITUDE");
+                    .HasColumnType("NUMBER(10,7)");
 
                 entity.Property(p => p.AreaHectares)
-                    .HasColumnType("NUMBER(10,2)")
-                    .HasColumnName("AREA_HECTARES");
+                    .HasColumnType("NUMBER(10,2)");
 
-                // Configurar relacionamentos
+                // Relacionamentos
                 entity.HasOne(p => p.Produtor)
                     .WithMany(pr => pr.Propriedades)
                     .HasForeignKey(p => p.IdProdutor)
@@ -80,16 +58,13 @@ namespace WaterWise.Infrastructure.Data
             modelBuilder.Entity<LeituraSensor>(entity =>
             {
                 entity.Property(l => l.UmidadeSolo)
-                    .HasColumnType("NUMBER(5,2)")
-                    .HasColumnName("UMIDADE_SOLO");
+                    .HasColumnType("NUMBER(5,2)");
 
                 entity.Property(l => l.TemperaturaAr)
-                    .HasColumnType("NUMBER(4,1)")
-                    .HasColumnName("TEMPERATURA_AR");
+                    .HasColumnType("NUMBER(4,1)");
 
                 entity.Property(l => l.PrecipitacaoMm)
-                    .HasColumnType("NUMBER(6,2)")
-                    .HasColumnName("PRECIPITACAO_MM");
+                    .HasColumnType("NUMBER(6,2)");
 
                 entity.HasOne(l => l.Sensor)
                     .WithMany(s => s.Leituras)
@@ -100,14 +75,11 @@ namespace WaterWise.Infrastructure.Data
             modelBuilder.Entity<TipoSensor>(entity =>
             {
                 entity.Property(t => t.ValorMin)
-                    .HasColumnType("NUMBER(10,2)")
-                    .HasColumnName("VALOR_MIN");
+                    .HasColumnType("NUMBER(10,2)");
 
                 entity.Property(t => t.ValorMax)
-                    .HasColumnType("NUMBER(10,2)")
-                    .HasColumnName("VALOR_MAX");
+                    .HasColumnType("NUMBER(10,2)");
 
-                // Índice único para evitar duplicatas
                 entity.HasIndex(t => t.NomeTipo)
                     .IsUnique()
                     .HasDatabaseName("IX_TIPO_SENSOR_NOME");
@@ -151,7 +123,6 @@ namespace WaterWise.Infrastructure.Data
                     .HasDatabaseName("IX_PRODUTOR_EMAIL");
             });
 
-            // Configurar relacionamento Alerta
             modelBuilder.Entity<Alerta>(entity =>
             {
                 entity.HasOne(a => a.Produtor)
@@ -175,7 +146,6 @@ namespace WaterWise.Infrastructure.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Configurações específicas para Oracle em desenvolvimento
                 optionsBuilder.EnableDetailedErrors();
                 optionsBuilder.EnableSensitiveDataLogging();
             }

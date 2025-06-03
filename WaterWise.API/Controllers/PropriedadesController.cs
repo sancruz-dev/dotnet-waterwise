@@ -225,28 +225,90 @@ namespace WaterWise.API.Controllers
       return Ok(dto);
     }
 
+    // 🎯 VERSÃO FINAL RECOMENDADA - EF Core Otimizado com Transação
+
     /// <summary>
-    /// Deletes a rural property
+    /// Deletes a rural property with all associated sensors and readings (cascade delete)
     /// </summary>
     /// <param name="id">Property ID</param>
     /// <returns>No content</returns>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeletePropriedade(int id)
     {
-      var propriedade = await _context.PropriedadesRurais.FindAsync(id);
-      if (propriedade == null)
-        return NotFound(new { error = $"Propriedade com ID {id} não encontrada" });
+      using var transaction = await _context.Database.BeginTransactionAsync();
 
-      _context.PropriedadesRurais.Remove(propriedade);
-      await _context.SaveChangesAsync();
+      try
+      {
+        _logger.LogInformation("Iniciando exclusão da propriedade ID: {PropertyId}", id);
 
-      _logger.LogInformation("Propriedade deletada: {PropertyId}", id);
+        // 1. Buscar a propriedade com sensores (mas sem carregar leituras ainda)
+        var propriedade = await _context.PropriedadesRurais
+            .Include(p => p.Sensores)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
-      return NoContent();
+        if (propriedade == null)
+        {
+          _logger.LogWarning("Propriedade não encontrada com ID: {PropertyId}", id);
+          return NotFound(new { error = $"Propriedade com ID {id} não encontrada" });
+        }
+
+        // 2. Se tem sensores, excluir leituras e sensores em ordem
+        if (propriedade.Sensores.Any())
+        {
+          _logger.LogInformation("Propriedade possui {SensorCount} sensor(es). Iniciando exclusão em cascata.",
+              propriedade.Sensores.Count);
+
+          var sensorIds = propriedade.Sensores.Select(s => s.Id).ToList();
+
+          // 2.1. Buscar e excluir todas as leituras dos sensores (otimizado)
+          var leituras = await _context.LeiturasSensores
+              .Where(l => sensorIds.Contains(l.IdSensor))
+              .ToListAsync();
+
+          if (leituras.Any())
+          {
+            _logger.LogInformation("Excluindo {ReadingCount} leitura(s) total dos sensores", leituras.Count);
+            _context.LeiturasSensores.RemoveRange(leituras);
+            await _context.SaveChangesAsync();
+          }
+
+          // 2.2. Excluir todos os sensores
+          _logger.LogInformation("Excluindo {SensorCount} sensor(es)", propriedade.Sensores.Count);
+          _context.SensoresIoT.RemoveRange(propriedade.Sensores);
+          await _context.SaveChangesAsync();
+        }
+
+        // 3. Excluir a propriedade
+        _logger.LogInformation("Excluindo propriedade ID: {PropertyId}", id);
+        _context.PropriedadesRurais.Remove(propriedade);
+        await _context.SaveChangesAsync();
+
+        // 4. Confirmar transação
+        await transaction.CommitAsync();
+
+        _logger.LogInformation("✅ Propriedade, sensores e leituras excluídos com sucesso! ID: {PropertyId}", id);
+
+        return NoContent();
+      }
+      catch (Exception ex)
+      {
+        // 5. Rollback em caso de erro
+        await transaction.RollbackAsync();
+
+        _logger.LogError(ex, "❌ Erro ao excluir propriedade ID: {PropertyId}. Transação revertida. Erro: {ErrorMessage}",
+            id, ex.Message);
+
+        return StatusCode(500, new
+        {
+          error = "Erro interno do servidor ao excluir propriedade",
+          message = ex.Message,
+          details = "A operação foi revertida. Nenhum dado foi alterado."
+        });
+      }
     }
-
     /// <summary>
     /// Receives sensor data from IoT devices
     /// </summary>

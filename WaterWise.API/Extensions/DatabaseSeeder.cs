@@ -311,32 +311,27 @@ namespace WaterWise.API.Extensions
                     new() {
                         IdPropriedade = 1,
                         IdTipoSensor = 1,
-                        ModeloDispositivo = "ESP32-SOIL-001",
-                        Status = "ATIVO"
+                        ModeloDispositivo = "ESP32-SOIL-001"
                     },
                     new() {
                         IdPropriedade = 1,
                         IdTipoSensor = 2,
-                        ModeloDispositivo = "ESP32-TEMP-001",
-                        Status = "ATIVO"
+                        ModeloDispositivo = "ESP32-TEMP-001"
                     },
                     new() {
                         IdPropriedade = 1,
                         IdTipoSensor = 3,
-                        ModeloDispositivo = "ESP32-RAIN-001",
-                        Status = "ATIVO"
+                        ModeloDispositivo = "ESP32-RAIN-001"
                     },
                     new() {
                         IdPropriedade = 2,
                         IdTipoSensor = 1,
-                        ModeloDispositivo = "ESP32-SOIL-002",
-                        Status = "ATIVO"
+                        ModeloDispositivo = "ESP32-SOIL-002"
                     },
                     new() {
                         IdPropriedade = 3,
                         IdTipoSensor = 2,
-                        ModeloDispositivo = "ESP32-TEMP-003",
-                        Status = "MANUTENCAO"
+                        ModeloDispositivo = "ESP32-TEMP-003"
                     }
                 };
 
