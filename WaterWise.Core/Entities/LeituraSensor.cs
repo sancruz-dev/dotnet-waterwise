@@ -4,9 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WaterWise.Core.Entities
 {
   [Table("GS_WW_LEITURA_SENSOR")]
-  public class LeituraSensor : BaseEntity
+  public class LeituraSensor
   {
+    [Key]
+    [Column("ID_LEITURA")]  // ← CORREÇÃO: Mapear para a coluna real do Oracle
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
     [Column("ID_SENSOR")]
+    [Required]  // ← Adicionar Required pois é NOT NULL no Oracle
     public int IdSensor { get; set; }
 
     [Column("TIMESTAMP_LEITURA")]

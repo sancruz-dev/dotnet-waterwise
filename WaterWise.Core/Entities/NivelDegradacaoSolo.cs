@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WaterWise.Core.Entities
 {
   [Table("GS_WW_NIVEL_DEGRADACAO_SOLO")]
-  public class NivelDegradacaoSolo : BaseEntity
+  public class NivelDegradacaoSolo
   {
-    [Column("ID_NIVEL_DEGRADACAO")]
     [Key]
+    [Column("ID_NIVEL_DEGRADACAO")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdNivelDegradacao { get; set; }
+    public int Id { get; set; }
+
 
     [Column("CODIGO_DEGRADACAO")]
     [Required]

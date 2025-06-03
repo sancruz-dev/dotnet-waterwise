@@ -206,7 +206,10 @@ namespace WaterWise.API.Controllers
       propriedade.Longitude = updateDto.Longitude;
       propriedade.AreaHectares = updateDto.AreaHectares;
       propriedade.IdNivelDegradacao = updateDto.IdNivelDegradacao;
-      propriedade.UpdatedAt = DateTime.UtcNow;
+
+
+      // REMOVIDO: propriedade.UpdatedAt = DateTime.UtcNow;
+      // Não atualizar UpdatedAt pois não existe no Oracle
 
       await _context.SaveChangesAsync();
 

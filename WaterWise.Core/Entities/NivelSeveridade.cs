@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WaterWise.Core.Entities
 {
   [Table("GS_WW_NIVEL_SEVERIDADE")]
-  public class NivelSeveridade : BaseEntity
+  public class NivelSeveridade
   {
-    [Column("ID_NIVEL_SEVERIDADE")]
     [Key]
+    [Column("ID_NIVEL_SEVERIDADE")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdNivelSeveridade { get; set; }
+    public int Id { get; set; }
 
     [Column("CODIGO_SEVERIDADE")]
     [Required]

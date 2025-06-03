@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WaterWise.Core.Entities
 {
   [Table("GS_WW_TIPO_SENSOR")]
-  public class TipoSensor : BaseEntity
+  public class TipoSensor
   {
-    [Column("ID_TIPO_SENSOR")]
     [Key]
+    [Column("ID_TIPO_SENSOR")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdTipoSensor { get; set; }
+    public int Id { get; set; }
 
     [Column("NOME_TIPO")]
     [Required]

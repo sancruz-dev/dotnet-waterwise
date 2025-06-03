@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WaterWise.Core.Entities
 {
   [Table("GS_WW_ALERTA")]
-  public class Alerta : BaseEntity
+  public class Alerta
   {
-    [Column("ID_ALERTA")]
     [Key]
+    [Column("ID_ALERTA")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdAlerta { get; set; }
+    public int Id { get; set; }
 
     [Column("ID_PRODUTOR")]
     [Required]
