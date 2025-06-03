@@ -17,6 +17,15 @@ namespace WaterWise.Infrastructure.Services
     private const string ALERTS_QUEUE = "waterwise.alerts";
     private const string SENSOR_DATA_QUEUE = "waterwise.sensor.data";
 
+    // ✅ JsonSerializerOptions configurado para evitar ciclos
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+      PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+      WriteIndented = false,
+      ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+      DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+    };
+
     public RabbitMQService(IConfiguration configuration, ILogger<RabbitMQService> logger)
     {
       _logger = logger;
@@ -71,10 +80,9 @@ namespace WaterWise.Infrastructure.Services
 
       try
       {
-        var json = JsonSerializer.Serialize(message, new JsonSerializerOptions
-        {
-          PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        // ✅ Criar DTO simples para evitar ciclos
+        var alertDto = CreateAlertDto(message);
+        var json = JsonSerializer.Serialize(alertDto, JsonOptions);
         var body = Encoding.UTF8.GetBytes(json);
 
         _channel.BasicPublish(
@@ -103,10 +111,9 @@ namespace WaterWise.Infrastructure.Services
 
       try
       {
-        var json = JsonSerializer.Serialize(sensorData, new JsonSerializerOptions
-        {
-          PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
+        // ✅ Criar DTO simples para evitar ciclos
+        var sensorDto = CreateSensorDataDto(sensorData);
+        var json = JsonSerializer.Serialize(sensorDto, JsonOptions);
         var body = Encoding.UTF8.GetBytes(json);
 
         _channel.BasicPublish(
@@ -119,10 +126,94 @@ namespace WaterWise.Infrastructure.Services
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, "❌ Erro ao publicar dados do sensor");
+        _logger.LogError(ex, "❌ Erro ao publicar dados do sensor: {Error}", ex.Message);
       }
 
       await Task.CompletedTask;
+    }
+
+    // ✅ Método para criar DTO simples de alerta (sem ciclos)
+    private static object CreateAlertDto(object message)
+    {
+      if (message == null) return new { };
+
+      var props = message.GetType().GetProperties();
+      var result = new Dictionary<string, object?>();
+
+      foreach (var prop in props)
+      {
+        var value = prop.GetValue(message);
+
+        // Evitar propriedades de navegação que causam ciclos
+        if (IsSimpleProperty(prop.PropertyType))
+        {
+          result[prop.Name] = value;
+        }
+      }
+
+      return result;
+    }
+
+    // ✅ Método para criar DTO simples de dados do sensor (sem ciclos)
+    private static object CreateSensorDataDto(object sensorData)
+    {
+      if (sensorData == null) return new { };
+
+      try
+      {
+        // Extrair dados usando reflection, mas evitando navegação circular
+        var props = sensorData.GetType().GetProperties();
+        var result = new Dictionary<string, object?>();
+
+        foreach (var prop in props)
+        {
+          var value = prop.GetValue(sensorData);
+
+          if (IsSimpleProperty(prop.PropertyType))
+          {
+            result[prop.Name] = value;
+          }
+          else if (prop.Name == "Reading" && value != null)
+          {
+            // Incluir dados da leitura sem navegação
+            var readingProps = value.GetType().GetProperties();
+            var reading = new Dictionary<string, object?>();
+
+            foreach (var readingProp in readingProps)
+            {
+              if (IsSimpleProperty(readingProp.PropertyType))
+              {
+                reading[readingProp.Name] = readingProp.GetValue(value);
+              }
+            }
+            result["Reading"] = reading;
+          }
+        }
+
+        return result;
+      }
+      catch (Exception)
+      {
+        // Fallback: retornar objeto básico
+        return new
+        {
+          Message = "Dados do sensor processados",
+          Timestamp = DateTime.UtcNow
+        };
+      }
+    }
+
+    // ✅ Verificar se o tipo é simples (não causa ciclos)
+    private static bool IsSimpleProperty(Type type)
+    {
+      return type.IsPrimitive ||
+             type == typeof(string) ||
+             type == typeof(decimal) ||
+             type == typeof(DateTime) ||
+             type == typeof(DateTimeOffset) ||
+             type == typeof(TimeSpan) ||
+             type == typeof(Guid) ||
+             Nullable.GetUnderlyingType(type) != null;
     }
 
     private void SetupExchangeAndQueues()

@@ -1,6 +1,7 @@
 # Ignorar bin e obj de cada projeto
 WaterWise.API/bin/
 WaterWise.API/obj/
+WaterWise.API/logs/
 WaterWise.API/.vs/
 
 WaterWise.Core/bin/

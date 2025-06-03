@@ -63,3 +63,21 @@ O **WaterWise** é um sistema IoT inteligente desenvolvido para a Global Solutio
 ```bash
 git clone https://github.com/seu-usuario/waterwise-api.git
 cd waterwise-api
+```
+
+Para enviar uma notificação de teste, faça uma requisição POST para o endereço `http://localhost:5086/test-alert`, enviando o seguinte objeto:
+```json
+{
+	"Message": "Teste notificação",
+	"Type": "manual",
+	"Severity": "Alta"
+}
+```
+
+Use um Fetch Client como Postman ou Insomnia (Exemplo de uso na imagem abaixo):
+
+<img src="./imgs/POST-alert-notification.png"/>
+
+Além do respose (preview, no Insomnia) como mostra a imagem acima, a notificação também aparece no console onde está rodando a NotificationService:
+
+<img src="./imgs/console-alert-notification.png"/>
