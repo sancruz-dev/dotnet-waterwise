@@ -55,3 +55,147 @@
 2025-06-01 12:20:03.034 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
 2025-06-01 12:20:03.062 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 27.8294ms
 2025-06-01 12:31:55.103 -03:00 [INF] Application is shutting down...
+2025-06-01 15:17:20.862 -03:00 [INF] Configurando conexão com Oracle: Data Source=localhost:1521/XEPDB1
+2025-06-01 15:17:26.568 -03:00 [ERR] 2025-06-01 15:17:26.565252 ThreadID:6   (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 15:17:26.573 -03:00 [INF] ✅ Conexão com banco de dados estabelecida
+2025-06-01 15:17:30.678 -03:00 [ERR] 2025-06-01 15:17:30.678862 ThreadID:6   (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 15:17:30.688 -03:00 [WRN] ⚠️ Erro na conexão com banco: ORA-50201: Oracle Communication: Failed to connect to server or failed to parse connect string. API continuará sem banco.
+2025-06-01 15:17:34.315 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-01 15:17:34.316 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-01 15:17:34.318 -03:00 [INF] 📍 Swagger UI disponível em: http://localhost:5072
+2025-06-01 15:17:34.319 -03:00 [INF] 🔗 Health check em: http://localhost:5072/health
+2025-06-01 15:17:34.503 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-01 15:17:34.505 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-01 15:17:34.507 -03:00 [INF] Hosting environment: Development
+2025-06-01 15:17:34.508 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API
+2025-06-01 15:17:59.937 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - null null
+2025-06-01 15:18:00.220 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 284.4919ms
+2025-06-01 15:18:11.368 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5072/api/v1/Propriedades?page=1&pageSize=10 - null null
+2025-06-01 15:18:11.436 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-06-01 15:18:11.489 -03:00 [INF] Executing endpoint 'WaterWise.API.Controllers.PropriedadesController.GetPropriedades (WaterWise.API)'
+2025-06-01 15:18:11.533 -03:00 [INF] Route matched with {action = "GetPropriedades", controller = "Propriedades"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[WaterWise.API.Controllers.PagedResult`1[WaterWise.Core.DTOs.PropriedadeDto]]] GetPropriedades(Int32, Int32) on controller WaterWise.API.Controllers.PropriedadesController (WaterWise.API).
+2025-06-01 15:18:11.715 -03:00 [INF] Executed action WaterWise.API.Controllers.PropriedadesController.GetPropriedades (WaterWise.API) in 174.7398ms
+2025-06-01 15:18:11.717 -03:00 [INF] Executed endpoint 'WaterWise.API.Controllers.PropriedadesController.GetPropriedades (WaterWise.API)'
+2025-06-01 15:18:11.719 -03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.MissingMethodException: Method not found: 'RabbitMQ.Client.IConnection RabbitMQ.Client.ConnectionFactory.CreateConnection()'.
+   at WaterWise.Infrastructure.Services.RabbitMQService..ctor()
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method21(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Program.<>c.<<<Main>$>b__0_8>d.MoveNext() in C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API\Program.cs:line 197
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at AspNetCoreRateLimit.RateLimitMiddleware`1.Invoke(HttpContext context) in C:\Users\User\Documents\Github\AspNetCoreRateLimit\src\AspNetCoreRateLimit\Middleware\RateLimitMiddleware.cs:line 124
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-06-01 15:18:11.773 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5072/api/v1/Propriedades?page=1&pageSize=10 - 500 null text/plain; charset=utf-8 405.5702ms
+2025-06-01 15:18:32.919 -03:00 [INF] Application is shutting down...
+2025-06-01 15:18:47.948 -03:00 [INF] Configurando conexão com Oracle: Data Source=localhost:1521/XEPDB1
+2025-06-01 15:18:53.469 -03:00 [ERR] 2025-06-01 15:18:53.466097 ThreadID:6   (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 15:18:53.474 -03:00 [INF] ✅ Conexão com banco de dados estabelecida
+2025-06-01 15:18:57.550 -03:00 [ERR] 2025-06-01 15:18:57.550731 ThreadID:6   (ERROR)   OracleDatabaseCreator.ExistsAsync() :  OracleException.Number: 50201
+2025-06-01 15:18:57.559 -03:00 [WRN] ⚠️ Erro na conexão com banco: ORA-50201: Oracle Communication: Failed to connect to server or failed to parse connect string. API continuará sem banco.
+2025-06-01 15:19:01.062 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-01 15:19:01.064 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-01 15:19:01.065 -03:00 [INF] 📍 Swagger UI disponível em: http://localhost:5072
+2025-06-01 15:19:01.066 -03:00 [INF] 🔗 Health check em: http://localhost:5072/health
+2025-06-01 15:19:01.199 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-01 15:19:01.201 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-01 15:19:01.202 -03:00 [INF] Hosting environment: Development
+2025-06-01 15:19:01.204 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API
+2025-06-01 15:30:46.959 -03:00 [INF] Application is shutting down...
+2025-06-01 15:31:04.924 -03:00 [INF] Configurando conexão com Oracle: Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))) (CONNECT_DATA=(SERVER=DEDICATED)(SID=ORCL)));User Id=rm553528;Password=150592;
+2025-06-01 15:31:06.428 -03:00 [INF] ✅ Conexão com banco de dados estabelecida
+2025-06-01 15:31:07.078 -03:00 [INF] Executed DbCommand (577ms) [Parameters=[], CommandType='"Text"', CommandTimeout='0']
+SELECT COUNT(*) FROM user_tables where sys_context('userenv', 'current_schema') NOT in ('ANONYMOUS', 'APEX_050000', 'APEX_030200', 'SYSMAN', 'EXFSYS', 'APEX_PUBLIC_USER', 'APPQOSSYS', 'AUDSYS', 'CTXSYS', 'DBSFWUSER', 'DBSNMP', 'DIP', 'DVSYS', 'DVF', 'FLOWS_FILES', 'GGSYS', 'GSMADMIN_INTERNAL', 'GSMCATUSER', 'GSMUSER', 'LBACSYS', 'MDDATA', 'MDSYS', 'ORDPLUGINS', 'ORDSYS', 'ORDDATA', 'OUTLN', 'ORACLE_OCM', 'REMOTE_SCHEDULER_AGENT', 'SI_INFORMTN_SCHEMA', 'SPATIAL_CSW_ADMIN_USR', 'SYS', 'SYSTEM', 'SYSBACKUP', 'SYSKM', 'SYSDG', 'SYSRAC', 'SYS$UMF', 'WMSYS', 'XDB', 'PUBLIC', 'OJVMSYS', 'OLAPSYS')
+2025-06-01 15:31:07.453 -03:00 [ERR] 2025-06-01 15:31:07.451054 ThreadID:8   (ERROR)   OracleRelationalCommand.ExecuteReaderAsync() :  Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00904: "FALSE": identificador inválido
+https://docs.oracle.com/error-help/db/ora-00904/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+2025-06-01 15:31:07.457 -03:00 [ERR] Failed executing DbCommand (75ms) [Parameters=[], CommandType='"Text"', CommandTimeout='0']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM "GS_WW_PRODUTOR_RURAL" "g") THEN True
+    ELSE False
+END FROM DUAL
+2025-06-01 15:31:07.463 -03:00 [ERR] 2025-06-01 15:31:07.463652 ThreadID:8   (ERROR)   OracleExecutionStrategy.ExecuteAsync() :  Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00904: "FALSE": identificador inválido
+https://docs.oracle.com/error-help/db/ora-00904/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+2025-06-01 15:31:07.477 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'WaterWise.Infrastructure.Data.WaterWiseContext'.
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00904: "FALSE": identificador inválido
+https://docs.oracle.com/error-help/db/ora-00904/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00904: "FALSE": identificador inválido
+https://docs.oracle.com/error-help/db/ora-00904/
+   at Oracle.ManagedDataAccess.Client.OracleCommand.<>c.<ExecuteDbDataReaderAsync>b__232_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleRelationalCommandBuilderFactory.OracleRelationalCommandBuilder.OracleRelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Oracle.EntityFrameworkCore.Storage.Internal.OracleExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2025-06-01 15:31:07.538 -03:00 [WRN] ⚠️ Erro na conexão com banco: ORA-00904: "FALSE": identificador inválido
+https://docs.oracle.com/error-help/db/ora-00904/. API continuará sem banco.
+2025-06-01 15:31:11.450 -03:00 [INF] ✅ Modelo ML.NET inicializado com sucesso
+2025-06-01 15:31:11.452 -03:00 [INF] 🌊 WaterWise API iniciada com sucesso!
+2025-06-01 15:31:11.453 -03:00 [INF] 📍 Swagger UI disponível em: http://localhost:5072
+2025-06-01 15:31:11.454 -03:00 [INF] 🔗 Health check em: http://localhost:5072/health
+2025-06-01 15:31:11.590 -03:00 [INF] Now listening on: http://localhost:5072
+2025-06-01 15:31:11.592 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-01 15:31:11.593 -03:00 [INF] Hosting environment: Development
+2025-06-01 15:31:11.595 -03:00 [INF] Content root path: C:\ws\gs-waterwise\dotnet\gs-dotnet-waterwise\WaterWise.API

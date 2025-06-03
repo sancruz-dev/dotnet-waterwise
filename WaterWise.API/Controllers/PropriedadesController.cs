@@ -137,6 +137,7 @@ namespace WaterWise.API.Controllers
 
       return Ok(dto);
     }
+
     /// <summary>
     /// Creates a new rural property
     /// </summary>

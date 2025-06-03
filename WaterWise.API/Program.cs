@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using System.Runtime.CompilerServices;
-
 // Torna os membros internal do WaterWise.API visíveis para o WaterWise.Tests.
 [assembly: InternalsVisibleTo("WaterWise.Tests")]
 
@@ -27,17 +26,28 @@ builder.Host.UseSerilog();
 
 try
 {
-    // Configurar DbContext
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-        ?? builder.Configuration.GetConnectionString("OracleConnection")
-        ?? "Data Source=localhost:1521/XEPDB1;User Id=waterwise;Password=waterwise123;";
+    // Configurar DbContext com configurações específicas para Oracle
+    var connectionString = builder.Configuration.GetConnectionString("OracleConnection");
 
-    Log.Information("Configurando conexão com Oracle: {ConnectionString}",
-        connectionString.Split(';')[0]); // Log apenas o host por segurança
+    Log.Information("Configurando conexão com Oracle: {Host}",
+        connectionString?.Split(';')?[0] ?? "Connection string não encontrada");
 
     builder.Services.AddDbContext<WaterWiseContext>(options =>
     {
-        options.UseOracle(connectionString);
+        options.UseOracle(connectionString, oracleOptions =>
+        {
+            // Configurações específicas para Oracle
+            oracleOptions.UseOracleSQLCompatibility(OracleSQLCompatibility.DatabaseVersion19);
+            oracleOptions.CommandTimeout(30);
+        });
+
+        // Configurações para desenvolvimento
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableDetailedErrors();
+            options.EnableSensitiveDataLogging();
+            options.LogTo(Console.WriteLine, LogLevel.Warning);
+        }
     });
 
     // Rate Limiting
@@ -124,30 +134,13 @@ try
             }
         });
 
-        c.SwaggerDoc("v2", new OpenApiInfo
-        {
-            Title = "WaterWise API",
-            Version = "v2",
-            Description = "Versão 2 da API WaterWise com funcionalidades estendidas"
-        });
-
-        // Incluir comentários XML
+        // Incluir comentários XML se disponível
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         if (File.Exists(xmlPath))
         {
             c.IncludeXmlComments(xmlPath);
         }
-
-        // Configurar esquemas de segurança (se necessário)
-        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-        {
-            Description = "JWT Authorization header using the Bearer scheme",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.ApiKey,
-            Scheme = "Bearer"
-        });
     });
 
     // CORS
@@ -163,7 +156,7 @@ try
 
     // Health Checks
     builder.Services.AddHealthChecks()
-        .AddDbContextCheck<WaterWiseContext>();
+        .AddDbContextCheck<WaterWiseContext>("database");
 
     var app = builder.Build();
 
@@ -174,7 +167,6 @@ try
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "WaterWise API V1");
-            c.SwaggerEndpoint("/swagger/v2/swagger.json", "WaterWise API V2");
             c.RoutePrefix = string.Empty; // Swagger na raiz
             c.DisplayRequestDuration();
             c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
@@ -197,11 +189,14 @@ try
         await next();
         stopwatch.Stop();
 
-        Log.Information("Request {Method} {Path} completed in {ElapsedMs}ms with status code {StatusCode}",
-            context.Request.Method,
-            context.Request.Path,
-            stopwatch.ElapsedMilliseconds,
-            context.Response.StatusCode);
+        if (stopwatch.ElapsedMilliseconds > 1000) // Log apenas requests lentos
+        {
+            Log.Warning("Slow request {Method} {Path} completed in {ElapsedMs}ms with status code {StatusCode}",
+                context.Request.Method,
+                context.Request.Path,
+                stopwatch.ElapsedMilliseconds,
+                context.Response.StatusCode);
+        }
     });
 
     app.MapControllers();
@@ -216,9 +211,37 @@ try
         version = "1.0.0",
         description = "Sistema IoT para prevenção de enchentes urbanas",
         timestamp = DateTime.UtcNow,
-        environment = app.Environment.EnvironmentName
+        environment = app.Environment.EnvironmentName,
+        database = "Oracle Database"
     }).WithTags("Info");
 
+    // Endpoint para verificar conectividade do banco
+    app.MapGet("/api/database/status", async (HttpContext httpContext) =>
+    {
+        using var scope = httpContext.RequestServices.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<WaterWiseContext>();
+
+        try
+        {
+            var canConnect = await context.Database.CanConnectAsync();
+            return Results.Json(new
+            {
+                connected = canConnect,
+                timestamp = DateTime.UtcNow,
+                message = canConnect ? "Conectado ao Oracle Database" : "Sem conexão com o banco"
+            });
+        }
+        catch (Exception ex)
+        {
+            return Results.Json(new
+            {
+                connected = false,
+                timestamp = DateTime.UtcNow,
+                message = "Erro na conexão",
+                error = ex.Message
+            });
+        }
+    }).WithTags("Database");
     // Inicialização segura do banco e ML
     using (var scope = app.Services.CreateScope())
     {
@@ -226,18 +249,47 @@ try
         {
             // Testar conexão com banco
             var context = scope.ServiceProvider.GetRequiredService<WaterWiseContext>();
-            await context.Database.CanConnectAsync();
-            Log.Information("✅ Conexão com banco de dados estabelecida");
+            var canConnect = await context.Database.CanConnectAsync();
 
-            // Seed de dados (opcional, apenas em desenvolvimento)
-            if (app.Environment.IsDevelopment())
+            if (canConnect)
             {
-                await DatabaseSeeder.SeedDatabaseAsync(scope.ServiceProvider);
+                Log.Information("✅ Conexão com Oracle Database estabelecida");
+
+                // Verificar se as tabelas existem antes de fazer seed
+                try
+                {
+                    var connection = context.Database.GetDbConnection();
+                    if (connection.State != System.Data.ConnectionState.Open)
+                        await connection.OpenAsync();
+
+                    using var command = connection.CreateCommand();
+                    command.CommandText = "SELECT COUNT(*) FROM USER_TABLES WHERE TABLE_NAME LIKE 'GS_WW_%'";
+                    var tableCount = Convert.ToInt32(await command.ExecuteScalarAsync());
+
+                    Log.Information("📊 Encontradas {TableCount} tabelas WaterWise no schema", tableCount);
+
+                    // Fazer seed apenas se solicitado explicitamente
+                    if (app.Environment.IsDevelopment() &&
+                        builder.Configuration.GetValue<bool>("Database:EnableSeed", false))
+                    {
+                        Log.Information("🌱 Iniciando seed de dados...");
+                        await DatabaseSeeder.SeedDatabaseAsync(scope.ServiceProvider);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning("⚠️ Erro ao verificar estrutura do banco: {Error}", ex.Message);
+                    Log.Information("💡 Dica: Verifique se as tabelas GS_WW_* existem no schema");
+                }
+            }
+            else
+            {
+                Log.Warning("⚠️ Não foi possível conectar ao Oracle Database");
             }
         }
         catch (Exception ex)
         {
-            Log.Warning("⚠️ Erro na conexão com banco: {Error}. API continuará sem banco.", ex.Message);
+            Log.Warning("⚠️ Erro na inicialização do banco: {Error}. API continuará sem banco.", ex.Message);
         }
 
         try
@@ -254,8 +306,9 @@ try
     }
 
     Log.Information("🌊 WaterWise API iniciada com sucesso!");
-    Log.Information("📍 Swagger UI disponível em: http://localhost:5072");
-    Log.Information("🔗 Health check em: http://localhost:5072/health");
+    Log.Information("📍 Swagger UI: http://localhost:5072");
+    Log.Information("🔗 Health check: http://localhost:5072/health");
+    Log.Information("📊 Database status: http://localhost:5072/api/database/status");
 
     app.Run();
 }
