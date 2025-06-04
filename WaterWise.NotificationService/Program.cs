@@ -85,7 +85,7 @@ try
             var message = Encoding.UTF8.GetString(body);
 
             Console.WriteLine($"📊 [SENSOR] {DateTime.Now:HH:mm:ss} - Dados recebidos");
-            Console.WriteLine($"📄 Dados: {message.Substring(0, Math.Min(255, message.Length))}...");
+            Console.WriteLine($"📄 Dados: {message}");
 
             sensorDataProcessed++;
             channel.BasicAck(ea.DeliveryTag, false);

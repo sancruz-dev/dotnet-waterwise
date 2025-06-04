@@ -6,7 +6,7 @@ namespace WaterWise.Core.DTOs
   {
     [Required]
     [StringLength(100)]
-    public string NomePropriedade { get; set; }
+    public string? NomePropriedade { get; set; }
 
     [Required]
     [Range(-90, 90)]
