@@ -21,7 +21,7 @@ O **WaterWise** é um sistema IoT inteligente desenvolvido para a Global Solutio
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend & API
-- **.NET 8.0** - Framework principal
+- **.NET 9.0** - Framework principal
 - **ASP.NET Core Web API** - API RESTful
 - **Entity Framework Core** - ORM para acesso a dados
 - **Oracle Database** - Banco de dados principal
@@ -32,7 +32,7 @@ O **WaterWise** é um sistema IoT inteligente desenvolvido para a Global Solutio
 
 ### Mensageria & Microsserviços
 - **RabbitMQ** - Message broker para comunicação assíncrona
-- **Microsserviços** - Arquitetura distribuída
+- **Microsserviços** - Arquitetura distribuída (**WaterWise.NotificationService**)
 
 ### Qualidade & Testes
 - **XUnit** - Framework de testes unitários
@@ -53,17 +53,62 @@ O **WaterWise** é um sistema IoT inteligente desenvolvido para a Global Solutio
 
 ### Pré-requisitos
 
-- **.NET 8.0 SDK** ou superior
+- **.NET 9.0 SDK** ou superior
 - **Oracle Database** (local ou Docker)
 - **RabbitMQ** (local ou Docker)
-- **Git**
 
-### 1. Clone o Repositório
+
+
+### 1. Executando o RabbitMQ
+Rode o comando abaixo para criar a imagem juntamente com o container do RabbitMQ que iremos utilizar:
+
+```bash
+docker run -d --name waterwise-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+```
+
+Em seguida abra seu docker e clique no botão de play para executar a imagem e deixá-la rodando:
+![dashboard-docker.png](imgs/dashboard-docker.png)
+
+
+### 2. Clonando e Executando o Projeto
 
 ```bash
 git clone https://github.com/seu-usuario/waterwise-api.git
-cd waterwise-api
+
+cd src
 ```
+
+### 2.1 Rodando API e Notificações (Microserviço) ao Mesmo Tempo
+
+**Passo 1** - Já dentro da pasta src, execute o seguinte comando para rodar a API:
+```bash
+dotnet watch run --project WaterWise.API
+```
+**Resultado**: 
+![cmd-result-api.png](imgs/cmd-result-api.png)
+
+
+**Passo 2** - Agora para rodar o microserviço de notificação:
+
+```bash
+dotnet watch run --project WaterWise.API
+```
+**Resultado**:
+![cmd-result-notification-initiate.png](imgs/cmd-result-notification-initiate.png)
+
+### 3. Endpoints
+
+Com os dois projetos rodando normalmente com suas devidas conexões estabelecidas, ao acessar a URL `http://localhost:5072/index.html` vamos nos deparar com os endpoints disponibilizados para podermos realizar requisições.
+
+![all-endpoints.png](imgs/allendpoints.png)
+
+
+Além disso, o Swagger também nos mostra cada DTO que a API está fazendo uso:
+![schemas.png](imgs/schemas.png)
+
+
+
+## 🧪 Instruções de Testes
 
 Para enviar uma notificação de teste, faça uma requisição POST para o endereço `http://localhost:5086/test-alert`, enviando o seguinte objeto:
 ```json
@@ -73,6 +118,7 @@ Para enviar uma notificação de teste, faça uma requisição POST para o ender
 	"Severity": "Alta"
 }
 ```
+
 
 Use um Fetch Client como Postman ou Insomnia (Exemplo de uso na imagem abaixo):
 
