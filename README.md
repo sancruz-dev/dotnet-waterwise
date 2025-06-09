@@ -245,39 +245,39 @@ Esta seção demonstra o uso prático dos principais endpoints da API WaterWise,
 **Corpo da Requisição:**
 ```json
 {
-  "codigoDegradacao": "MODERADO",
-  "descricaoDegradacao": "Solo com degradação moderada necessitando atenção",
-  "nivelNumerico": 3,
-  "acoesCorretivas": "Implementar práticas de conservação e monitoramento regular"
+  "codigoDegradacao": "string",
+  "descricaoDegradacao": "string",
+  "nivelNumerico": 1,
+  "acoesCorretivas": "string"
 }
 ```
 
 **Response Esperado (201 Created):**
 ```json
 {
-  "id": 6,
-  "codigoDegradacao": "MODERADO",
-  "descricaoDegradacao": "Solo com degradação moderada necessitando atenção",
-  "nivelNumerico": 3,
-  "acoesCorretivas": "Implementar práticas de conservação e monitoramento regular",
+  "id": 26,
+  "codigoDegradacao": "CUSTOMIZADO",
+  "descricaoDegradacao": "teste desc",
+  "nivelNumerico": 5,
+  "acoesCorretivas": "teste ações",
   "links": [
     {
-      "href": "/api/v1/niveisdegradacao/6",
+      "href": "/api/v1/NiveisDegradacao/25",
       "rel": "self",
       "method": "GET"
     },
     {
-      "href": "/api/v1/niveisdegradacao/6",
+      "href": "/api/v1/NiveisDegradacao/25",
       "rel": "update",
       "method": "PUT"
     },
     {
-      "href": "/api/v1/niveisdegradacao/6",
+      "href": "/api/v1/NiveisDegradacao/25",
       "rel": "delete",
       "method": "DELETE"
     },
     {
-      "href": "/api/v1/niveisdegradacao",
+      "href": "/api/v1/NiveisDegradacao",
       "rel": "collection",
       "method": "GET"
     }
@@ -285,13 +285,15 @@ Esta seção demonstra o uso prático dos principais endpoints da API WaterWise,
 }
 ```
 
-**Print da Requisição:**
+**Prints da Requisição:**
 
 ![req-post-niveisdegradacao.png](./imgs/req-post-niveisdegradacao.png)
-![res-post-niveisdegradacao.png.png](./imgs/res-post-niveisdegradacao.png.png)
+![res-post-niveisdegradacao.png](./imgs/res-post-niveisdegradacao.png)
 ---
 
 #### 🗑️ 3.2. DELETE: Excluir Nível de Degradação
+
+Neste endpoint vamos deletar o Nivel degradação que acabamos de criar (de id 26).
 
 **Endpoint:** `DELETE /api/v1/niveisdegradacao/6`
 
@@ -310,11 +312,10 @@ Body: (vazio)
 }
 ```
 
-**Print da Requisição:**
-```
-[Espaço reservado para print da exclusão do nível de degradação]
-```
+**Prints da Requisição:**
 
+![req-delete-niveisdegradacao](./imgs/req-delete-niveisdegradacao.png)
+![res-delete-niveisdegradacao](./imgs/res-delete-niveisdegradacao.png)
 ---
 
 #### ✏️ 3.3. PUT: Atualizar Produtor Rural
@@ -779,9 +780,3 @@ Para debugging, ative logs detalhados no `appsettings.Development.json`:
   }
 }
 ```
-
-## 📞 Contato
-
-- **Equipe WaterWise**: contato@waterwise.com
-- **Issues**: [GitHub Issues](https://github.com/waterwise-team/waterwise-api/issues)
-- **Documentação**: [Wiki do Projeto](https://github.com/waterwise-team/waterwise-api/wiki)
